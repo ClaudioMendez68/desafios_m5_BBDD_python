@@ -4,6 +4,11 @@
 -- 1. Crear una base de datos llamada películas. (OPCIONAL)
 create database peliculas;
 -- 2. Cargar ambos archivos a su tabla correspondiente. (OPCIONAL)
+-- ADVERTENCIA: --
+-- Se cambiaron las siguientes columnas en la importación del archivo 'peliculas.csv':
+	-- 'Película' por 'titulo'
+	-- 'Año Estreno' por 'estreno'
+	-- 'Director' por 'director'
 truncate peliculas;
 truncate reparto;
 
