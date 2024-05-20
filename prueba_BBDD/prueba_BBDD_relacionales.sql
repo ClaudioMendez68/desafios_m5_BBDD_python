@@ -13,7 +13,7 @@ CREATE TABLE tags (
 );
 CREATE TABLE peliculas_tags (
     id SERIAL PRIMARY KEY,
-    pelicula_id INT REFERENCES peliculas(id),
+    pelicula_id INTEGER REFERENCES peliculas(id),
     tag_id INTEGER REFERENCES tags(id)
 );
 
@@ -53,7 +53,7 @@ INNER JOIN tags ON peliculas_tags.tag_id = tags.id;
 -- 3. Cuenta la cantidad de tags que tiene cada película. 
 -- Si una película no tiene tags debe mostrar 0. (1 punto)
 SELECT peliculas.nombre AS pelicula, COUNT(peliculas_tags.tag_id) AS cantidad FROM peliculas
-INNER JOIN peliculas_tags ON peliculas.id = peliculas_tags.pelicula_id
+LEFT JOIN peliculas_tags ON peliculas.id = peliculas_tags.pelicula_id
 GROUP BY pelicula ORDER BY cantidad DESC;
 
 -- 4. Crea las tablas respetando los nombres, tipos, claves primarias y foráneas y tipos de datos. (1 punto)
@@ -104,11 +104,8 @@ VALUES
     ('Por el Capitán América', 2, 3),
     ('Por Americo Vespucio', 3, 3),
     ('Taylor Swift', 1, 4),
-    ('La Emperatriz Cixi', 2, 4),
-    ('Kim Kardashian', 3, 4),
-    ('Para medir triangulos', 1, 5),
-    ('Para medir triangulos', 2, 5),
-    ('Para medir el trigo', 3, 5);
+    ('Lady Gaga', 2, 4),
+    ('Kim Kardashian', 3, 4);
 
 -- 6. Cuenta la cantidad de respuestas correctas totales por usuario (independiente de la pregunta). (1 punto)
 
