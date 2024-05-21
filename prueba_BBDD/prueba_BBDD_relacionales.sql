@@ -149,7 +149,7 @@ ALTER TABLE usuarios
 ADD COLUMN email VARCHAR(255) UNIQUE;
 
 INSERT INTO usuarios (nombre, edad, email)
-VALUES ('Elba Surero', 37, 'elbasur@gmail.com');
+VALUES ('Elba Zurita', 37, 'elbazurita@gmail.com');
 
 INSERT INTO usuarios (nombre, edad)
-VALUES ('Elba Surero', 37);
+VALUES ('Elba Zurita', 37);
