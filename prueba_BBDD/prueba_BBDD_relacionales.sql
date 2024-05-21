@@ -1,4 +1,4 @@
-CREATE DATABASE prueba_BBDD_relacionales;
+CREATE DATABASE prueba_bbdd;
 
 -- 1. Crea el modelo (revisa bien cuál es el tipo de relación antes de crearlo), 
 -- respeta las claves primarias, foráneas y tipos de datos. (1 punto)
@@ -41,10 +41,7 @@ VALUES
     (1, 2),
     (1, 3),
     (2, 4),
-    (2, 5),
-    (3, NULL),
-    (4, NULL),
-    (5, NULL);
+    (2, 5);
 
 SELECT peliculas.nombre, tags.tag FROM peliculas
 INNER JOIN peliculas_tags ON peliculas.id = peliculas_tags.pelicula_id
@@ -100,9 +97,9 @@ VALUES
     ('En vino', 1, 2),
     ('En un melvin', 2, 2),
     ('En whiskey', 3, 2),
-    ('Por Americo Vespucio', 1, 3),
+    ('Por Donald Trump', 1, 3),
     ('Por el Capitán América', 2, 3),
-    ('Por Americo Vespucio', 3, 3),
+    ('Por la Copa América', 3, 3),
     ('Taylor Swift', 1, 4),
     ('Lady Gaga', 2, 4),
     ('Kim Kardashian', 3, 4);
@@ -112,19 +109,23 @@ VALUES
 SELECT usuarios.nombre, respuestas.respuesta FROM usuarios
 LEFT JOIN respuestas ON usuarios.id = respuestas.usuario_id
 INNER JOIN preguntas ON respuestas.pregunta_id = preguntas.id
-WHERE respuestas.respuesta = preguntas.respuesta_correcta;
+AND respuestas.respuesta = preguntas.respuesta_correcta;
 
-SELECT usuarios.nombre AS usuario, COUNT(respuestas.id) AS cantidad_respuestas FROM usuarios
+SELECT usuarios.nombre AS usuario, COUNT(respuestas.usuario_id) AS cantidad_respuestas FROM usuarios
 LEFT JOIN respuestas ON usuarios.id = respuestas.usuario_id
-INNER JOIN preguntas ON respuestas.pregunta_id = preguntas.id
-WHERE respuestas.respuesta = preguntas.respuesta_correcta
-GROUP BY usuario;
+AND respuestas.respuesta = (SELECT respuesta_correcta FROM preguntas WHERE id = respuestas.pregunta_id)
+GROUP BY usuario ORDER BY cantidad_respuestas DESC;
 -- 7. Por cada pregunta, en la tabla preguntas, cuenta cuántos usuarios tuvieron la respuesta correcta. (1 punto)
-SELECT preguntas.pregunta AS pregunta, COUNT(usuarios.nombre) AS cantidad_usuarios FROM preguntas
+
+SELECT preguntas.pregunta, COUNT(respuestas.usuario_id) FROM preguntas
 LEFT JOIN respuestas ON preguntas.id = respuestas.pregunta_id
-INNER JOIN usuarios ON respuestas.usuario_id = usuarios.id
-WHERE preguntas.respuesta_correcta = respuestas.respuesta
-GROUP BY pregunta;
+AND respuestas.respuesta = preguntas.respuesta_correcta
+GROUP BY preguntas.pregunta;
+
+SELECT preguntas.pregunta AS pregunta, COUNT(respuestas.usuario_id) AS cantidad_usuarios FROM preguntas
+LEFT JOIN respuestas ON preguntas.id = respuestas.pregunta_id
+AND preguntas.respuesta_correcta = respuestas.respuesta
+GROUP BY pregunta ORDER BY cantidad_usuarios DESC;
 
 -- 8. Implementa borrado en cascada de las respuestas al borrar un usuario
 -- y borrar el primer usuario para probar la implementación. (1 punto)
@@ -149,3 +150,6 @@ ADD COLUMN email VARCHAR(255) UNIQUE;
 
 INSERT INTO usuarios (nombre, edad, email)
 VALUES ('Elba Surero', 37, 'elbasur@gmail.com');
+
+INSERT INTO usuarios (nombre, edad)
+VALUES ('Elba Surero', 37);
